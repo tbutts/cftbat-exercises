@@ -1,4 +1,4 @@
-(ns chpt5.cftbat.core)
+(ns cftbat-exercises.05.core)
 
 ; 1. Create a function, `attr`, that you can call like (attr :intelligence) and that does the same thing.
 (def character
@@ -37,7 +37,7 @@
   [m [k & ks] v]
   (if (empty? ks)
     (assoc m k v)
-    (assoc m k (my-assoc-in2 (get m k) ks v))))
+    (assoc m k (my-assoc-in (get m k) ks v))))
 
 ; 4. Look up and use the update-in function.
 (update-in {:outer {:inner 5}} [:outer :inner] * 2)

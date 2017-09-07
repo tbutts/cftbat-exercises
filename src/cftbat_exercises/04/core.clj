@@ -1,6 +1,6 @@
-(ns fwpd.core)
+(ns cftbat-exercises.04.core)
 
-(def filename "src/cftbat_exercises/4/suspects.csv")
+(def filename "src/cftbat_exercises/04/suspects.csv")
 
 (def vamp-keys [:name :glitter-index])
 
@@ -54,7 +54,7 @@
 ;    a map of keywords to validating functions, similar to conversions,
 ;    and the record to be validated.
 (defn validate
-  "Predicate checks that :name and :glitter-index are present"
+  "Predicate which checks that :name and :glitter-index are present"
   [validators suspect]
   (reduce
    (fn [is-valid [vamp-key value]]
@@ -86,11 +86,13 @@
   (clojure.string/join "\n" (map unparse-line suspects)))
 
 (validate-vampire-suspect {:name "Morvis Fleshdrinking" :glitter-index 5}) ; => true
-(validate-vampire-suspect {:name "Mr Poopy Butthole" :haha #"10/10"}) ; => false
+(validate-vampire-suspect {:name "Mr Poopy Butthole" :bad-key #"10/10"}) ; => false
 
 ;; (def vamp-suspects (mapify (parse (slurp filename))))
+
+; Verify that safe-append returns the original list of suspects when given an invalid suspect.
 ;; (= vamp-suspects
-;;    (safe-append vamp-suspects {:name "Mr Poopy Butthole" :haha #"10/10"})) ; => true
+;;    (safe-append vamp-suspects {:name "Mr Poopy Butthole" :bad-key #"10/10"})) ; => true
 
 ;; (unparse-suspects vamp-suspects)
 ;; => "Edward Cullen,10\nBella Swan,0\nCharlie Swan,0\nJacob Black,3\nCarlisle Cullen,6"
