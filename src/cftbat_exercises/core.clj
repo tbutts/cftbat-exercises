@@ -6,10 +6,18 @@
 
 (defn alias-interns
   "Find functions available in a namespace via a quoted alias"
+  ; Here, the "thread-first (->)" macro places the map of ns-aliases first in
+  ; the parameters of each function. So, with `get`, `namespace-alias` is
+  ; actually the 2nd param. This macro, as discussed in Chapter 7, does its
+  ; magic to rewrite internal code after Clojure's reader, but before evaluation.
+  ; The code itself is data that can be manipulated!
+  ;
+  ; If you run macroexpand on this, the result is:
+  ; (ns-interns (get (ns-aliases *ns*) (quote c03)))
   [namespace-alias]
   (-> *ns*
       ns-aliases
-      (#(get % namespace-alias))
+      (get namespace-alias)
       ns-interns))
 
 (defn -main
