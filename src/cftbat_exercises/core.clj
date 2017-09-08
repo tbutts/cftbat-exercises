@@ -1,7 +1,8 @@
 (ns cftbat-exercises.core
   (:require [cftbat-exercises.03.core :as c03]
             [cftbat-exercises.04.core :as c04]
-            [cftbat-exercises.05.core :as c05]))
+            [cftbat-exercises.05.core :as c05]
+            [cftbat-exercises.07.core :as c07]))
 
 (defn alias-interns
   "Find functions available in a namespace via a quoted alias"
