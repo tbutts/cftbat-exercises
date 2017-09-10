@@ -1,4 +1,5 @@
-(ns cftbat-exercises.04.core)
+(ns cftbat-exercises.04.core
+  (:require [clojure.test :refer [with-test is]]))
 
 (def filename "src/cftbat_exercises/04/suspects.csv")
 
@@ -46,8 +47,6 @@
   [vamp-suspects suspect]
   (concat vamp-suspects [suspect]))
 
-(def suspect-validators {:name string?
-                 :glitter-index number?})
 
 ; 3. Write a function, validate, which will check that :name and :glitter-index
 ;    are present when you append. The validate function should accept two arguments:
@@ -65,6 +64,8 @@
    true
    suspect))
 
+(def suspect-validators {:name string?
+                 :glitter-index number?})
 (def validate-vampire-suspect #(validate suspect-validators %))
 
 (defn safe-append
@@ -73,6 +74,12 @@
   (if (validate-vampire-suspect suspect)
     (append vamp-suspects suspect)
     vamp-suspects))
+
+(with-test
+  (def ex3)
+  (is (= (validate-vampire-suspect {:name "Morvis Fleshdrinking" :glitter-index 5}) true))
+  (is (= (validate-vampire-suspect {:name "Mr Poopy Butthole" :bad-key #"10/10"}) false))
+  )
 
 ; 4. Write a function that will take your list of maps and convert it back to a CSV string.
 ;    You'll need to use the clojure.string/join function.
@@ -85,15 +92,16 @@
   [suspects]
   (clojure.string/join "\n" (map unparse-line suspects)))
 
-(validate-vampire-suspect {:name "Morvis Fleshdrinking" :glitter-index 5}) ; => true
-(validate-vampire-suspect {:name "Mr Poopy Butthole" :bad-key #"10/10"}) ; => false
+(with-test
+  (def ex4)
+  (def vamp-suspects (mapify (parse (slurp filename))))
 
-;; (def vamp-suspects (mapify (parse (slurp filename))))
+  ; If safe-append's new suspsect is invalid, unmodified list of suspects is returned
+  (is (= vamp-suspects
+         (safe-append vamp-suspects {:name "Mr Poopy Butthole"
+                                     :bad-key #"10/10"})))
 
-; Verify that safe-append returns the original list of suspects when given an invalid suspect.
-;; (= vamp-suspects
-;;    (safe-append vamp-suspects {:name "Mr Poopy Butthole" :bad-key #"10/10"})) ; => true
-
-;; (unparse-suspects vamp-suspects)
-;; => "Edward Cullen,10\nBella Swan,0\nCharlie Swan,0\nJacob Black,3\nCarlisle Cullen,6"
+  (is (= (unparse-suspects vamp-suspects)
+  "Edward Cullen,10\nBella Swan,0\nCharlie Swan,0\nJacob Black,3\nCarlisle Cullen,6"))
+  )
 

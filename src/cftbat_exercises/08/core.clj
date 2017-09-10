@@ -1,4 +1,5 @@
-(ns cftbat-exercises.08.core)
+(ns cftbat-exercises.08.core
+  (:require [clojure.test :refer [with-test is are]]))
 
 ; 1. Write the macro when-valid so that it behaves similarly to when.
 ;    Here is an example of calling it:
@@ -10,7 +11,9 @@
 ;    and when-valid should return nil if the data is invalid.
 
 
-; Here is the necessary validate function and helpers from the Chapter 8 text
+;;; Here is the necessary validate function
+;;; and helpers from the Chapter 8 text
+
 (defn error-messages-for
   "Return a seq of error messages"
   [to-validate message-validator-pairs]
@@ -37,22 +40,24 @@
   `(if (empty? (validate ~to-validate ~validations))
         (do ~@body)))
 
-; Test Ex. 1:
-(def order-strict-validations {:price ["Price must not be negative" (complement neg?)]})
-(def order-validations {:price ["Price must be a number" number?]})
-(def order-details {:name "Tide Laundry Detrg." :price -0.54})
+(with-test
+  (defn ex1
+    [order validations]
+    (when-valid order validations
+                #_(println "Valid order test") ; Printing disabled, for muddying test output
+                (assoc order :valid true)))
+  (def order-strict-validations {:price ["Price must not be negative" (complement neg?)]})
+  (def order-validations {:price ["Price must be a number" number?]})
+  (def order-details {:name "Tide Laundry Detrg." :price -0.54})
 
-; Order is invalid, thus nothing is printed and nil is returned:
-(comment (when-valid order-details order-strict-validations
-                     (println "Invalid order, this will not print!")
-                     (assoc order-details :valid true)))
-; => nil
+  ; Order is invalid, thus nothing is printed and nil is returned:
+  (is (= (ex1 order-details order-strict-validations)
+         nil))
 
-; Order is valid, prints and returns marked order
-(comment (when-valid order-details order-validations
-                     (println "Tests passed, valid order!")
-                     (assoc order-details :valid true)))
-; => {:name "Tide Laundry Detrg.", :price -0.54, :valid true}
+  ; Order is valid, prints and returns marked order
+  (is (= (ex1 order-details order-validations)
+         {:name "Tide Laundry Detrg.", :price -0.54, :valid true}))
+  )
 
 ; 2. You saw that and is implemented as a macro. Implement or as a macro.
 
@@ -83,9 +88,18 @@
    `(let [or# ~x]
       (if or# or# (or' ~@next)))))
 
-; Test Ex. 2:
-(or  false nil "Truthy string" :also-true); => "Truthy string"
-(or' false nil "Truthy string" :also-true); => "Truthy string"
+
+(with-test
+  (def ex2)
+  (is (= (or' false nil [nil nil] true) [nil nil]))
+
+  ; I could write a macro to pass identical values to the two `or`, but
+  ; then that macro would be another source of possible errors. Better to
+  ; just write out the entire values
+  (is (= (or') (or)))
+  (is (= (or' true) (or true)))
+  (is (= (or' false "truthy" true) (or false "truthy" true)))
+ )
 
 ; 3. In Chapter 5 you created a series of functions (c-int, c-str, c-dex)
 ;    to read an RPG character's attributes. Write a macro that defines
@@ -103,23 +117,28 @@
    `(do (defattrs ~f ~k)
         (defattrs ~@rest))))
 
-; Test Ex. 3:
-(defattrs
-  c-int :intelligence
-  c-str :strength
-  c-dex :dexterity)
 
-; Check that the functions created via the macro
-; are all defined in the current namespace:
-(every? (ns-interns *ns*) '(c-int c-str c-dex)) ; => true
+(with-test
+  (def ex3)
 
-(def character
-  {:name "Smooches McCutes"
-   :attributes {:intelligence 10
-                :strength 4
-                :dexterity 5}})
+  ; Check that the functions created via the macro
+  ; are all defined in the current namespace:
+  (defattrs
+    c-int :intelligence
+    c-str :strength
+    c-dex :dexterity)
+  (is (every? (ns-interns 'cftbat-exercises.08.core) '(c-int c-str c-dex)))
 
-(c-int character) ; => 10
-(c-str character) ; => 4
-(c-dex character) ; => 5
+  (def character
+    {:name "Smooches McCutes"
+     :attributes {:intelligence 10
+                  :strength 4
+                  :dexterity 5}})
+
+  (are [getter expected] (= (getter character) expected)
+    c-int 10
+    c-str 4
+    c-dex 5
+    )
+  )
 

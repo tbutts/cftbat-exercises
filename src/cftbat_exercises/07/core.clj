@@ -1,10 +1,16 @@
-(ns cftbat-exercises.07.core)
+(ns cftbat-exercises.07.core
+  (:require [clojure.test :refer [with-test is are]]))
 
 ; 1. Use the list function, quoting, and read-string to create a list that,
 ;    when evaluated, prints your first name and your favorite sci-fi movie.
-(def sci-fi-list (list (read-string "println") '"John" '"Interstellar"))
-sci-fi-list ; => (println "John" "Interstellar")
-(defn sci-fi-printer [] (eval sci-fi-list)) ; prints "John Interstellar"
+(defn very-contrived-fn
+  [first-name fav-sci-fi-flick]
+  (list (read-string "println") first-name fav-sci-fi-flick))
+
+(with-test
+  (def ex1)
+  (is (= (very-contrived-fn '"Arnoldo" '"Hitchhiker's")
+         '(println "Arnoldo" "Hitchhiker's"))))
 
 ; 2. Create an infix function that takes a list like (1 + 3 * 4 - 5)
 ;    and transforms it into the lists that Clojure needs in order to
@@ -47,9 +53,14 @@ sci-fi-list ; => (println "John" "Interstellar")
 (def infix-calc (comp eval infix))
 
 ; Test Ex. 2:
-(infix '(1 + 3 * 4 - 5))
-; => (- (+ 1 (* 3 4)) 5)
+(with-test
+  ; Test both the expression building & calculation
+  (def ex2-infix-tests (juxt infix infix-calc))
+  (are [input results] (= (ex2-infix-tests input) results)
+    '(1 +  2) ['(+ 1  2)  3]
+    '(1 * -9) ['(* 1 -9) -9]
+    '(1 + 3 * 4 - 5) ['(- (+ 1 (* 3 4)) 5)   8]
+    '(1 - 3 * 4 - 5) ['(- (- 1 (* 3 4)) 5) -16])
+  )
 
-(infix-calc  '(1 + 3 * 4 - 5))
-; => 8
 
