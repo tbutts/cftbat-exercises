@@ -5,6 +5,9 @@
             [cftbat-exercises.07.core :as c07]
             [cftbat-exercises.08.core :as c08]
             [cftbat-exercises.09.core :as c09]
+            [cftbat-exercises.10.core :as c10]
+            [cftbat-exercises.11.core :as c11]
+            [cftbat-exercises.12.core :as c12]
             )
   )
 
