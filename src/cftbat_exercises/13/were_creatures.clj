@@ -1,4 +1,4 @@
-(ns were-creatures)
+(ns cftbat-exercises.13.were-creatures)
 
 ;; Sample code from CftBaT Chapter 13 text, used with the exercises in core.clj
 

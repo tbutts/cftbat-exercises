@@ -51,5 +51,6 @@ knowledge fountains:
 * [ClojureDocs](https://clojuredocs.org/)
 * [Eli Bendersky's Blog](https://eli.thegreenplace.net/archives/all)
 * [Kyle Kingsbury Blog - "Aphyr"](https://aphyr.com/tags/Clojure)
+* [Community Clojure style guide](https://github.com/bbatsov/clojure-style-guide)
 * [Emacs reference card](https://www.gnu.org/software/emacs/refcards/pdf/refcard.pdf) (the 'card' is two 8x11.5" pieces of paper)
 
