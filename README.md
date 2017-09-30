@@ -6,7 +6,7 @@ a delightful book about a fun, modern Lisp language for the JVM.
 This repo contains my complete & partial solutions for exercises provided
 at the end of most chapters.
 
-Many things are done the way they are, as part of the learning & exploration process
+Many things are done the way they are as part of the learning & exploration process
 of both Clojure the language, and the ecosystem.
 
 ## Running
@@ -42,7 +42,7 @@ You can build the project or run tests stand alone using
 * Start the REPL `lein repl`, from which you can run `(-main)` for help!
 * Run tests using `lein test <namespace from the top of any file>`
     * You have to specify the individual namespaces, as I did not separate tests
-    into separate files, because it made iterating through exercises faster.
+      into separate files, because it made iterating through exercises faster.
 
 ## Other resources
 
@@ -53,4 +53,6 @@ knowledge fountains:
 * [Kyle Kingsbury Blog - "Aphyr"](https://aphyr.com/tags/Clojure)
 * [Community Clojure style guide](https://github.com/bbatsov/clojure-style-guide)
 * [Emacs reference card](https://www.gnu.org/software/emacs/refcards/pdf/refcard.pdf) (the 'card' is two 8x11.5" pieces of paper)
+    * As well as the docs for Emacs packages
+      such as `CIDER`, `paredit`, `projectile`, `clj-refactor`, and `magit`
 
