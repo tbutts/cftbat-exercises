@@ -8,6 +8,7 @@
             [cftbat-exercises.10.core :as c10]
             [cftbat-exercises.11.core :as c11]
             [cftbat-exercises.12.core :as c12]
+            [cftbat-exercises.13.core :as c13]
             )
   )
 
